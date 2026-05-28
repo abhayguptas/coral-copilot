@@ -1,0 +1,32 @@
+.main {
+  min-height: 100vh;
+  padding-top: 72px; /* For Navbar */
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  /* Subtle grid background */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+.chatContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 120px; /* Space for voice orb */
+}
+
+.inputContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, var(--bg-primary) 70%, transparent);
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}

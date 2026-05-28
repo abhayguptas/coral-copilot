@@ -1,0 +1,146 @@
+.container {
+  width: 100%;
+  margin: 16px 0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.th {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 10px 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.th:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.thContent {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sortIcon {
+  opacity: 0.4;
+}
+
+.th:hover .sortIcon {
+  opacity: 1;
+}
+
+.td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tr:last-child .td {
+  border-bottom: none;
+}
+
+.tr:hover .td {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+/* Cell types */
+.null {
+  color: var(--text-secondary);
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.boolean {
+  color: var(--warning);
+  font-family: monospace;
+}
+
+.object {
+  color: var(--success, #10b981);
+  font-family: monospace;
+}
+
+.link {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.1);
+  border-top: 1px solid var(--border);
+}
+
+.pageInfo {
+  color: var(--text-secondary);
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+}
+
+.pageBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageBtn:not(:disabled):hover {
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.3);
+  color: var(--primary);
+}
+
+.pageBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.error {
+  color: var(--error);
+  padding: 16px;
+  border: 1px solid var(--error);
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+}

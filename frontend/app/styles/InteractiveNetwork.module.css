@@ -1,0 +1,73 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-surface);
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.centerNode {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+}
+
+.orbitNode {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(10, 10, 15, 0.8);
+  border: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+
+.tl { top: 20%; left: 20%; transform: translate(-50%, -50%); }
+.tr { top: 20%; right: 20%; transform: translate(50%, -50%); }
+.bl { bottom: 20%; left: 20%; transform: translate(-50%, 50%); }
+.br { bottom: 20%; right: 20%; transform: translate(50%, 50%); }
+
+.pulseRing {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid rgba(99, 102, 241, 0.5);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  animation: radarPulse 3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+@keyframes radarPulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+}
