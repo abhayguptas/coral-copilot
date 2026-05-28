@@ -43,8 +43,8 @@ Designed to reduce friction, Coral Copilot integrates OpenAI Whisper for a seaml
 *(Insert link to YouTube Demo Video Here)*
 
 | Marketplace Integration | Voice & Chat Interface |
-|:---:|:---:|
-| <img src="https://placehold.co/600x400?text=Marketplace+Screenshot" width="400" /> | <img src="https://placehold.co/600x400?text=Chat+Interface+Screenshot" width="400" /> |
+| :---: | :---: |
+| <img width="400" alt="Marketplace Integration" src="https://github.com/user-attachments/assets/13a7dd73-b555-4c01-a4f2-2fe3ded601ba" /> | <img width="400" alt="Voice and Chat Interface" src="https://github.com/user-attachments/assets/9e0ed222-18a6-4bfe-aa93-025a98b873be" /> |
 
 ---
 
