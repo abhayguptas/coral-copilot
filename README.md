@@ -106,7 +106,13 @@ flowchart LR
    ```bash
    cp backend/.env.example backend/.env
    ```
-   Open `backend/.env` and insert your `OPENAI_API_KEY`.
+   Open `backend/.env` and insert your API key. 
+   
+   **Using OpenAI (Default):**
+   Provide your `OPENAI_API_KEY`.
+   
+   **Using Groq (Faster):**
+   Set `OPENAI_API_KEY` to your `gsk_...` key, uncomment `OPENAI_BASE_URL=https://api.groq.com/openai/v1`, and set `OPENAI_MODEL=llama-3.3-70b-versatile`.
 
 3. **Start the Application:**
    ```bash
