@@ -20,14 +20,20 @@ Building custom ETL pipelines to aggregate this operational data takes weeks of 
 ### 1. Zero-ETL Federated Querying
 We eliminate the need for complex data pipelines. When you ask a question, the LLM agent translates your intent into federated SQL. The Coral DataFusion engine executes this SQL directly against live SaaS APIs, returning real-time data without a central database.
 
-### 2. Dynamic Schema Discovery via MCP
-Through our integrated marketplace, adding a new source (like Hugging Face or Hashnode) is as simple as providing an API token. The agent uses the Model Context Protocol (MCP) to dynamically discover new schemas and tables at runtime, adapting to new integrations without requiring code changes.
+### 2. Cross-Source Correlation Querying
+Our agent actively identifies when you ask about data spanning multiple platforms. It constructs federated SQL with `JOIN`s across disparate sources (e.g., GitHub PRs and Linear issues) executing as a single query—Coral's true superpower.
 
-### 3. Autonomous Self-Healing SQL
+### 3. Dynamic Schema Discovery via MCP
+Through our integrated marketplace, adding a new source (like Hugging Face or Hashnode) is as simple as providing an API token. The agent uses the Model Context Protocol (MCP) to dynamically discover new schemas and tables at runtime, adapting to new integrations without requiring code changes. Source health is verified in real-time with live connection indicators.
+
+### 4. Autonomous Self-Healing SQL
 LLMs write bad SQL. Our backend orchestrates a self-healing loop: if a generated query contains an error, is inefficient, or exceeds API rate limits, the backend intercepts the failure and allows the agent to autonomously correct and retry the query in the background before responding to the user.
 
-### 4. Voice-First Developer Experience
-Designed to reduce friction, Coral Copilot integrates OpenAI Whisper for a seamless, hands-free voice interface, allowing developers to query their stack while actively coding.
+### 5. Advanced UI & Data Visualizations
+- **Voice-First Experience:** Built-in OpenAI Whisper dictation allows you to query your stack while actively coding.
+- **Auto-Charting:** The UI intelligently detects numeric output (like downloads or likes) and automatically renders beautiful Recharts data visualizations.
+- **One-Click Export:** Every data table includes instant CSV and JSON export buttons for offline analysis.
+- **Persistent History:** A sleek sidebar automatically logs your queries and their generated SQL for cross-session continuity.
 
 ---
 
