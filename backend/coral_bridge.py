@@ -93,12 +93,15 @@ async def coral_source_add(name: str, token: str | None = None) -> str:
     """Run `coral source add <name>` and return the output."""
     env_key = f"{name.upper()}_TOKEN"
     community_manifest = os.path.expanduser(f"~/personal/coral/sources/community/{name}/manifest.yaml")
+    core_manifest = os.path.expanduser(f"~/personal/coral/sources/core/{name}/manifest.yaml")
     
-    # If community source, try to parse the exact secret input key from the manifest
-    if os.path.exists(community_manifest):
+    manifest_to_parse = community_manifest if os.path.exists(community_manifest) else (core_manifest if os.path.exists(core_manifest) else None)
+    
+    # Try to parse the exact secret input key from the manifest
+    if manifest_to_parse:
         try:
             import yaml
-            with open(community_manifest, "r") as f:
+            with open(manifest_to_parse, "r") as f:
                 manifest_data = yaml.safe_load(f)
                 inputs = manifest_data.get("inputs", {})
                 for k, v in inputs.items():
