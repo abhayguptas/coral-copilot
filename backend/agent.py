@@ -80,6 +80,15 @@ Examples:
 - Most downloaded models: `SELECT id, pipeline_tag, likes, downloads FROM huggingface.models WHERE sort = 'downloads' AND direction = '-1' LIMIT 10`
 - Most liked models: `SELECT id, pipeline_tag, likes, downloads FROM huggingface.models WHERE sort = 'likes' AND direction = '-1' LIMIT 10`
 
+## Notion specific guidance
+
+**CRITICAL RULE FOR NOTION**: The `notion` source does NOT have a `notion.pages` table. To list or search pages and databases, you MUST use the `notion.search` table. 
+Additionally, the `notion.search` table does NOT have a `title` column. You must select columns like `id, object, url, created_time` instead.
+
+Examples:
+- List recent Notion pages: `SELECT id, object, url FROM notion.search WHERE object = 'page' LIMIT 10`
+- Search Notion for a keyword: `SELECT id, object, url FROM notion.search WHERE query = 'keyword' LIMIT 10`
+
 If the user provides a specific owner/repo, you can use more specific tables like `github.pulls WHERE owner = '...' AND repo = '...'`.
 
 ## Rules
