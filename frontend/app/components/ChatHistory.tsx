@@ -5,6 +5,8 @@ import TypewriterMarkdown from './TypewriterMarkdown';
 import DashboardSummary from './DashboardSummary';
 import DataTable from './DataTable';
 import Logo from './Logo';
+import ResultChart from './ResultChart';
+import ExportButtons from './ExportButtons';
 
 export interface Message {
   id: string;
@@ -66,7 +68,11 @@ export default function ChatHistory({ messages, isProcessing = false, onAction }
                     {msg.type === 'sql' ? (
                       <SQLDisplay code={msg.content} />
                     ) : msg.type === 'data_table' ? (
-                      <DataTable data={msg.content} />
+                      <div className={styles.dataTableContainer}>
+                        <ExportButtons data={msg.content} />
+                        <DataTable data={msg.content} />
+                        <ResultChart data={msg.content} />
+                      </div>
                     ) : msg.type === 'thinking' ? (
                       <div className={styles.thinking}>
                         <span className={styles.spinner}></span>

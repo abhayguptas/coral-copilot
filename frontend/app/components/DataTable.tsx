@@ -28,8 +28,8 @@ export default function DataTable({ data }: DataTableProps) {
   // Sorting
   const sortedData = [...parsedData].sort((a, b) => {
     if (!sortConfig) return 0;
-    const aVal = a[sortConfig.key];
-    const bVal = b[sortConfig.key];
+    const aVal = a[sortConfig.key] as any;
+    const bVal = b[sortConfig.key] as any;
     
     if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
     if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;

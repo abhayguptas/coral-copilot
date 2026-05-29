@@ -11,7 +11,7 @@ from fastapi.responses import StreamingResponse
 from openai import OpenAI
 
 from agent import CoralAgent
-from coral_bridge import coral_source_list, coral_source_discover, coral_source_add, coral_sql
+from coral_bridge import coral_source_list, coral_source_discover, coral_source_add, coral_sql, coral_source_health
 from models import ChatRequest, SourceInfo
 from voice import transcribe_audio
 
@@ -151,3 +151,10 @@ async def add_source(name: str, config: SourceConfigInput | None = None):
     if result.startswith("Error:"):
         raise HTTPException(status_code=400, detail=result)
     return {"result": result}
+
+
+@app.get("/api/sources/health/{name}")
+async def source_health(name: str):
+    """Check if a connected source is healthy."""
+    result = await coral_source_health(name)
+    return result

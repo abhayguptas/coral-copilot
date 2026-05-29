@@ -169,3 +169,48 @@ async def coral_sql(query: str) -> str:
     if proc.returncode != 0:
         return f"SQL Error: {stderr.decode().strip()}"
     return stdout.decode().strip()
+
+
+async def coral_source_health(name: str) -> dict:
+    """Check if a source is healthy by running a test query."""
+    # Try to find a test query from the manifest
+    test_query = None
+    for base in [
+        os.path.expanduser(f"~/personal/coral/sources/core/{name}/manifest.yaml"),
+        os.path.expanduser(f"~/personal/coral/sources/community/{name}/manifest.yaml"),
+    ]:
+        if os.path.exists(base):
+            try:
+                import yaml
+                with open(base, "r") as f:
+                    manifest = yaml.safe_load(f)
+                    test_queries = manifest.get("test_queries", [])
+                    if test_queries:
+                        test_query = test_queries[0]
+            except Exception:
+                pass
+            break
+
+    if not test_query:
+        # Fallback: discover first table and SELECT 1 row
+        tables = await coral_source_discover()
+        source_tables = [t for t in tables if t.get("name", "").startswith(f"{name}.")]
+        if source_tables:
+            test_query = f"SELECT * FROM {source_tables[0]['name']} LIMIT 1"
+        else:
+            return {"status": "unhealthy", "error": "No tables found for source"}
+
+    proc = await asyncio.create_subprocess_exec(
+        CORAL_BIN, "sql", "--format", "json", test_query,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    try:
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=8.0)
+    except asyncio.TimeoutError:
+        proc.kill()
+        return {"status": "unhealthy", "error": "Query timed out"}
+
+    if proc.returncode != 0:
+        return {"status": "unhealthy", "error": stderr.decode().strip()[:200]}
+    return {"status": "healthy"}

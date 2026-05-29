@@ -89,6 +89,15 @@ Examples:
 - List recent Notion pages: `SELECT id, object, url FROM notion.search WHERE object = 'page' LIMIT 10`
 - Search Notion for a keyword: `SELECT id, object, url FROM notion.search WHERE query = 'keyword' LIMIT 10`
 
+## Cross-Source Correlation
+
+Coral can JOIN data across different sources in a single SQL query. This is the most powerful feature.
+If the user asks about data spanning multiple platforms, write a single federated query with JOINs.
+
+Examples:
+- GitHub PRs with Linear issues: `SELECT g.title, g.html_url, l.state FROM github.search_issues g JOIN linear.issues l ON g.title = l.title WHERE g.q = 'is:pr is:open author:@me' LIMIT 10`
+- Combine any two sources the user has installed by JOINing on shared columns like title, name, or email.
+
 If the user provides a specific owner/repo, you can use more specific tables like `github.pulls WHERE owner = '...' AND repo = '...'`.
 
 ## Rules

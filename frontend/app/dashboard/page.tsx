@@ -1,16 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import ChatInput from '../components/ChatInput';
 import ChatHistory, { Message } from '../components/ChatHistory';
 import ConfigModal from '../components/ConfigModal';
+import QueryHistory, { QueryEntry } from '../components/QueryHistory';
 import styles from '../styles/Dashboard.module.css';
 
 export default function Dashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [installSource, setInstallSource] = useState<string | null>(null);
+  
+  const [queryHistory, setQueryHistory] = useState<QueryEntry[]>([]);
+  const [currentHistoryId, setCurrentHistoryId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('coral_query_history');
+    if (saved) {
+      try {
+        setQueryHistory(JSON.parse(saved));
+      } catch (e) {}
+    }
+  }, []);
+
+  const handleClearHistory = () => {
+    setQueryHistory([]);
+    localStorage.removeItem('coral_query_history');
+  };
 
   const handleTranscript = async (text: string) => {
     if (!text.trim()) return;
@@ -18,6 +36,15 @@ export default function Dashboard() {
     // Add user message
     const userMsgId = crypto.randomUUID();
     setMessages(prev => [...prev, { id: userMsgId, role: 'user', content: text, type: 'text' }]);
+    
+    const hId = crypto.randomUUID();
+    setCurrentHistoryId(hId);
+    
+    setQueryHistory(prev => {
+      const newHistory = [{ id: hId, question: text, timestamp: Date.now() }, ...prev].slice(0, 50);
+      localStorage.setItem('coral_query_history', JSON.stringify(newHistory));
+      return newHistory;
+    });
     
     setIsProcessing(true);
 
@@ -63,7 +90,7 @@ export default function Dashboard() {
               continue;
             }
 
-            if (data.type === 'install_request') {
+             if (data.type === 'install_request') {
                setInstallSource(data.content);
                continue;
             } else if (data.type === 'thinking' || data.type === 'sql' || data.type === 'error' || data.type === 'data_table') {
@@ -71,6 +98,17 @@ export default function Dashboard() {
                  ...prev, 
                  { id: crypto.randomUUID(), role: 'agent', content: data.content, type: data.type }
                ]);
+               
+               if (data.type === 'sql') {
+                 setQueryHistory(prev => {
+                   const updated = prev.map(entry => 
+                     (entry.id === hId && !entry.sql) ? { ...entry, sql: data.content } : entry
+                   );
+                   localStorage.setItem('coral_query_history', JSON.stringify(updated));
+                   return updated;
+                 });
+               }
+               
                currentAgentMsgId = null; // Next text should be a new block
             } else if (data.type === 'text') {
                if (!currentAgentMsgId) {
@@ -138,6 +176,11 @@ export default function Dashboard() {
   return (
     <>
       <Navbar />
+      <QueryHistory 
+        entries={queryHistory} 
+        onSelectQuery={handleTranscript} 
+        onClear={handleClearHistory} 
+      />
       <main className={styles.main}>
         <div className={styles.chatContainer}>
           <ChatHistory messages={messages} isProcessing={isProcessing} onAction={handleTranscript} />
