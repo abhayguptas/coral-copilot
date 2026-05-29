@@ -52,8 +52,12 @@ export default function SourceCard({ source, onInstall }: SourceCardProps) {
             {isInstalling ? 'Installing...' : 'Connect Skill'}
           </button>
         ) : (
-          <button className={styles.manageBtn} disabled>
-            Manage Config (CLI)
+          <button 
+            className={styles.manageBtn} 
+            onClick={handleInstall}
+            disabled={isInstalling}
+          >
+            {isInstalling ? 'Updating...' : 'Update Token'}
           </button>
         )}
       </div>
