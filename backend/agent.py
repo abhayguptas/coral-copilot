@@ -333,13 +333,16 @@ class CoralAgent:
                             result = await session.call_tool(fn_name, fn_args)
                             tool_output = result.content[0].text if result.content else ""
                             
-                            # Intercept large SQL results to render as a data table
                             if fn_name == "sql" and not tool_output.startswith("Error") and not tool_output.startswith("SQL Error"):
                                 try:
                                     data = json.loads(tool_output)
+                                    # Handle both array format and object format {"rows": [...]}
+                                    if isinstance(data, dict) and "rows" in data:
+                                        data = data["rows"]
+                                        
                                     if isinstance(data, list) and len(data) > 3:
-                                        # Yield data table to frontend
-                                        yield {"type": "data_table", "content": tool_output}
+                                        # Yield data table to frontend (always send as JSON array)
+                                        yield {"type": "data_table", "content": json.dumps(data)}
                                         # Tell LLM we displayed it natively
                                         tool_output = f"Successfully queried and displayed a rich data table with {len(data)} rows to the user. DO NOT list the rows in your response. Just provide a 1-sentence conversational summary."
                                 except json.JSONDecodeError:

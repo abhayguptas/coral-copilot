@@ -106,6 +106,26 @@
   border-radius: 12px;
 }
 
+.thinkingSuccess {
+  color: #22c55e !important;
+  background: rgba(34, 197, 94, 0.05) !important;
+  border-color: rgba(34, 197, 94, 0.15) !important;
+}
+
+.thinkingError {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+  border-color: rgba(239, 68, 68, 0.15) !important;
+}
+
+.successIcon {
+  color: #22c55e;
+}
+
+.errorIcon {
+  color: #ef4444;
+}
+
 .spinner {
   width: 16px;
   height: 16px;

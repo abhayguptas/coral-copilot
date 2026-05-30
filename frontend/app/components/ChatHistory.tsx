@@ -1,4 +1,5 @@
 import { useRef, useEffect } from 'react';
+import { CheckCircle2, XCircle } from 'lucide-react';
 import styles from '../styles/ChatHistory.module.css';
 import SQLDisplay from './SQLDisplay';
 import TypewriterMarkdown from './TypewriterMarkdown';
@@ -13,6 +14,7 @@ export interface Message {
   role: 'user' | 'agent' | 'system';
   content: string;
   type: 'text' | 'sql' | 'thinking' | 'error' | 'data_table';
+  status?: 'pending' | 'success' | 'error';
 }
 
 interface ChatHistoryProps {
@@ -74,8 +76,14 @@ export default function ChatHistory({ messages, isProcessing = false, onAction }
                         <ResultChart data={msg.content} />
                       </div>
                     ) : msg.type === 'thinking' ? (
-                      <div className={styles.thinking}>
-                        <span className={styles.spinner}></span>
+                      <div className={`${styles.thinking} ${msg.status === 'success' ? styles.thinkingSuccess : msg.status === 'error' ? styles.thinkingError : ''}`}>
+                        {msg.status === 'success' ? (
+                          <CheckCircle2 size={16} className={styles.successIcon} />
+                        ) : msg.status === 'error' ? (
+                          <XCircle size={16} className={styles.errorIcon} />
+                        ) : (
+                          <span className={styles.spinner}></span>
+                        )}
                         {msg.content}
                       </div>
                     ) : msg.type === 'text' && msg.role === 'agent' ? (
