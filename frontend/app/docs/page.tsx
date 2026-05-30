@@ -21,10 +21,22 @@ const DOCS = {
           <li><strong>OpenAI API Key</strong> with access to GPT-4o and Whisper.</li>
         </ol>
 
-        <h2>Running the Copilot</h2>
-        <p>Start both the frontend and backend servers simultaneously:</p>
+        <h2>Deploying Locally</h2>
+        <p>Because Coral Copilot connects to your live databases and operational data, the LLM agent and MCP Server must be run locally or within your private VPC.</p>
+        
+        <h3>1. Fork and Clone</h3>
+        <pre><code>git clone https://github.com/abhayguptas/coral-copilot.git
+cd coral-copilot
+make setup</code></pre>
+
+        <h3>2. Configure Environment</h3>
+        <pre><code>cp backend/.env.example backend/.env</code></pre>
+        <p>Open <code>backend/.env</code> and insert your API key. You can use OpenAI or Groq (for Llama 3 70B).</p>
+
+        <h3>3. Run the Copilot</h3>
+        <p>Start both the Next.js frontend and the FastAPI backend servers simultaneously:</p>
         <pre><code>make dev</code></pre>
-        <p>The UI will be available at <code>http://localhost:3000</code> and the API at <code>http://localhost:8000</code>.</p>
+        <p>The Copilot UI will be available at <code>http://localhost:3000</code>.</p>
       </>
     )
   },

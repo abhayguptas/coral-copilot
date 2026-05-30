@@ -54,6 +54,7 @@ const faqs = [
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const isDeployed = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview';
 
   return (
     <>
@@ -84,12 +85,25 @@ export default function Home() {
           </motion.p>
           
           <motion.div className={styles.ctaGroup} variants={fadeInUp}>
-            <Link href="/dashboard" className={styles.primaryCta}>
-              <Mic size={20} /> Try the Copilot
-            </Link>
-            <Link href="/marketplace" className={styles.secondaryCta}>
-              View Skill Marketplace
-            </Link>
+            {isDeployed ? (
+              <>
+                <Link href="/docs" className={styles.primaryCta}>
+                  <Database size={20} /> Setup Instructions
+                </Link>
+                <a href="https://github.com/abhayguptas/coral-copilot" target="_blank" rel="noopener noreferrer" className={styles.secondaryCta}>
+                  View on GitHub
+                </a>
+              </>
+            ) : (
+              <>
+                <Link href="/dashboard" className={styles.primaryCta}>
+                  <Mic size={20} /> Try the Copilot
+                </Link>
+                <Link href="/marketplace" className={styles.secondaryCta}>
+                  View Skill Marketplace
+                </Link>
+              </>
+            )}
           </motion.div>
         </motion.div>
 
@@ -251,9 +265,15 @@ export default function Home() {
         >
           <h2 className={styles.ctaBlockTitle}>Ready to ship faster?</h2>
           <p className={styles.ctaBlockDesc}>Stop hunting through dashboards. Start talking to your stack today.</p>
-          <Link href="/dashboard" className={styles.primaryCta}>
-            Launch Copilot
-          </Link>
+          {isDeployed ? (
+            <Link href="/docs" className={styles.primaryCta}>
+              Deploy Locally
+            </Link>
+          ) : (
+            <Link href="/dashboard" className={styles.primaryCta}>
+              Launch Copilot
+            </Link>
+          )}
         </motion.div>
 
       </main>

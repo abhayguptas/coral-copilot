@@ -3,6 +3,8 @@ import Logo from './Logo';
 import styles from '../styles/Navbar.module.css';
 
 export default function Navbar() {
+  const isDeployed = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' || process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview';
+
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
@@ -14,12 +16,22 @@ export default function Navbar() {
         </div>
         
         <div className={styles.links}>
-          <Link href="/dashboard" className={styles.link}>Dashboard</Link>
-          <Link href="/marketplace" className={styles.link}>Marketplace</Link>
+          {!isDeployed && (
+            <Link href="/dashboard" className={styles.link}>Dashboard</Link>
+          )}
+          {!isDeployed && (
+            <Link href="/marketplace" className={styles.link}>Marketplace</Link>
+          )}
           <Link href="/docs" className={styles.link}>Docs</Link>
-          <Link href="/dashboard" className={styles.cta}>
-            Start Talking
-          </Link>
+          {isDeployed ? (
+            <Link href="/docs" className={styles.cta}>
+              Deploy Locally
+            </Link>
+          ) : (
+            <Link href="/dashboard" className={styles.cta}>
+              Start Talking
+            </Link>
+          )}
         </div>
       </div>
     </nav>

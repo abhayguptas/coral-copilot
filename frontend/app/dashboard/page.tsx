@@ -87,6 +87,16 @@ export default function Dashboard() {
               setIsProcessing(false);
               currentAgentMsgId = null;
               currentAgentMsgContent = '';
+              setMessages(prev => {
+                const newMessages = [...prev];
+                for (let i = newMessages.length - 1; i >= 0; i--) {
+                  if (newMessages[i].type === 'thinking' && newMessages[i].status === 'pending') {
+                    newMessages[i] = { ...newMessages[i], status: 'success' };
+                    break;
+                  }
+                }
+                return newMessages;
+              });
               continue;
             }
 
@@ -94,10 +104,26 @@ export default function Dashboard() {
                setInstallSource(data.content);
                continue;
             } else if (data.type === 'thinking' || data.type === 'sql' || data.type === 'error' || data.type === 'data_table') {
-               setMessages(prev => [
-                 ...prev, 
-                 { id: crypto.randomUUID(), role: 'agent', content: data.content, type: data.type }
-               ]);
+               setMessages(prev => {
+                 const newMessages = [...prev];
+                 
+                 // If previous is thinking, mark it as success or error
+                 for (let i = newMessages.length - 1; i >= 0; i--) {
+                   if (newMessages[i].type === 'thinking' && newMessages[i].status === 'pending') {
+                     newMessages[i] = { ...newMessages[i], status: data.type === 'error' ? 'error' : 'success' };
+                     break; // Only update the most recent pending thinking message
+                   }
+                 }
+                 
+                 newMessages.push({ 
+                   id: crypto.randomUUID(), 
+                   role: 'agent', 
+                   content: data.content, 
+                   type: data.type,
+                   status: data.type === 'thinking' ? 'pending' : undefined
+                 });
+                 return newMessages;
+               });
                
                if (data.type === 'sql') {
                  setQueryHistory(prev => {
@@ -111,6 +137,17 @@ export default function Dashboard() {
                
                currentAgentMsgId = null; // Next text should be a new block
             } else if (data.type === 'text') {
+               setMessages(prev => {
+                 const newMessages = [...prev];
+                 for (let i = newMessages.length - 1; i >= 0; i--) {
+                   if (newMessages[i].type === 'thinking' && newMessages[i].status === 'pending') {
+                     newMessages[i] = { ...newMessages[i], status: 'success' };
+                     break;
+                   }
+                 }
+                 return newMessages;
+               });
+
                if (!currentAgentMsgId) {
                  currentAgentMsgId = crypto.randomUUID();
                  currentAgentMsgContent = data.content;
