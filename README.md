@@ -46,7 +46,7 @@ LLMs write bad SQL. Our backend orchestrates a self-healing loop: if a generated
 
 ## Demo & Screenshots
 
-*(Insert link to YouTube Demo Video Here)*
+*https://youtu.be/p9y585sTYzw?si=vy4POxofyq-AFbe6*
 
 | Marketplace Integration | Voice & Chat Interface |
 | :---: | :---: |
