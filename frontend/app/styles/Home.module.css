@@ -167,7 +167,7 @@
 .marqueeContent {
   display: flex;
   gap: 60px;
-  animation: scroll 30s linear infinite;
+  animation: scroll 300s linear infinite;
   align-items: center;
   padding: 0 30px;
 }
