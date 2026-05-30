@@ -114,7 +114,11 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 1 }}
         >
-          <span className={styles.integrationsTitle}>Works out of the box with 90+ Integrations</span>
+          <div className={styles.highlightContainer}>
+            <div className={styles.highlightGlow}></div>
+            <h2 className={styles.highlightNumber}>90+</h2>
+            <p className={styles.highlightText}>Data Sources Connected Instantly</p>
+          </div>
           <div className={styles.marquee}>
             <div className={styles.marqueeContent}>
               {[...integrations, ...integrations].map((item, idx) => (
